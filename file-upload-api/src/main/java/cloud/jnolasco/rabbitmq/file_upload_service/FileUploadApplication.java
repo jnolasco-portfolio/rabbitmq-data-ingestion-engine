@@ -1,4 +1,4 @@
-package cloud.jnolasco.rabbitmq.producer_service;
+package cloud.jnolasco.rabbitmq.file_upload_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -4,3 +4,17 @@ server:
 spring:
   application:
     name: producer-service
+
+storage:
+  path: /tmp
+
+rabbitmq:
+  host: localhost
+  port: 5672
+  username: myuser
+  password: secret
+  exchanges:
+    file-upload: file.upload.exchange
+  queues:
+    ingestor: ingestor.queue
+    notification: notification.queue

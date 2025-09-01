@@ -1,4 +1,4 @@
-package cloud.jnolasco.rabbitmq.producer_service;
+package cloud.jnolasco.rabbitmq.file.upload.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

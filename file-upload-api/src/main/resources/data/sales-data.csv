@@ -1,0 +1,5 @@
+order_id,product_name,quantity,price_usd,customer_email
+1001,Laptop,1,1200.00,user1@example.com
+1002,Mouse,2,25.50,user2@example.com
+1003,Keyboard,1,75.00,user3@example.com
+1004,Monitor,1,300.00,user1@example.com
