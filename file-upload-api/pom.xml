@@ -8,9 +8,9 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>cloud.jnolasco.rabbitmq</groupId>
-	<artifactId>producer-service</artifactId>
+	<artifactId>file-upload-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>producer-service</name>
+	<name>file-upload-api</name>
 	<description>Producer for the data-driven data ingestion engine</description>
 	<url/>
 	<licenses>
