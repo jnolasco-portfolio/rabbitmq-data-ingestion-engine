@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: jnolasco
+      changes:
+        - createTable:
+            tableName: upload_configurations
+            columns:
+              - column:
+                  name: job_id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: target_table
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: mapping_json
+                  type: JSONB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: jnolasco
+      changes:
+        - insert:
+            tableName: upload_configurations
+            columns:
+              - column:
+                  name: job_id
+                  value: a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
+              - column:
+                  name: target_table
+                  value: sales_orders
+              - column:
+                  name: mapping_json
+                  value: '{"order_id": "order_id", "product_name": "product_name", "quantity": "quantity", "price_usd": "price", "customer_email": "customer_email"}'
