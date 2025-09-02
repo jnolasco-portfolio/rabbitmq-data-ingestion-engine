@@ -1,4 +1,4 @@
-package cloud.jnolasco.rabbitmq.file_upload_service.dto;
+package cloud.jnolasco.rabbitmq.common.event;
 
 
 import lombok.Builder;

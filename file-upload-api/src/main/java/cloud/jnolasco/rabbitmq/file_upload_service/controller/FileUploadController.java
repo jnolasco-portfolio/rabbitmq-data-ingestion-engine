@@ -1,7 +1,7 @@
 package cloud.jnolasco.rabbitmq.file_upload_service.controller;
 
+import cloud.jnolasco.rabbitmq.common.event.FileUploadEvent;
 import cloud.jnolasco.rabbitmq.file_upload_service.config.StorageProperties;
-import cloud.jnolasco.rabbitmq.file_upload_service.dto.FileUploadEvent;
 import cloud.jnolasco.rabbitmq.file_upload_service.publisher.UpLoadProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
