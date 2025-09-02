@@ -3,10 +3,10 @@ server:
 
 spring:
   application:
-    name: csv-ingestor-service
+    name: csv-ingestion-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ingestor
+    url: jdbc:postgresql://localhost:5432/ingestion
     username: ingestor_user
     password: secret2
     driver-class-name: org.postgresql.Driver
@@ -20,6 +20,20 @@ spring:
   liquibase:
     change-log: classpath:/db/changelog/app-changelog.yaml
     default-schema: public
+
+storage:
+  path: /tmp
+
+rabbitmq:
+  host: localhost
+  port: 5672
+  username: myuser
+  password: secret
+  exchanges:
+    ingestion: ingestion.exchange
+  queues:
+    report-generator: report-generator.queue
+    notification: notification.queue
 ---
 spring:
   config:

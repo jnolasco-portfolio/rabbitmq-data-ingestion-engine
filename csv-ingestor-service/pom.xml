@@ -68,7 +68,13 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
-	</dependencies>
+        <dependency>
+            <groupId>cloud.jnolasco</groupId>
+            <artifactId>commons-data-ingestion</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <plugins>

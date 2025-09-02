@@ -28,6 +28,18 @@ databaseChangeLog:
                   defaultValueComputed: now()
                   constraints:
                     nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
   - changeSet:
       id: 2
       author: jnolasco

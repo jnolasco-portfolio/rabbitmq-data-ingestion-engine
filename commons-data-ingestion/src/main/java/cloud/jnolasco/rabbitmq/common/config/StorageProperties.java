@@ -1,4 +1,4 @@
-package cloud.jnolasco.rabbitmq.file_upload_service.config;
+package cloud.jnolasco.rabbitmq.common.config;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
