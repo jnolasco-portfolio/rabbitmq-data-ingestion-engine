@@ -4,7 +4,7 @@ databaseChangeLog:
       author: jnolasco
       changes:
         - createTable:
-            tableName: upload_configurations
+            tableName: ingestion_configurations
             columns:
               - column:
                   name: job_id
@@ -45,7 +45,7 @@ databaseChangeLog:
       author: jnolasco
       changes:
         - insert:
-            tableName: upload_configurations
+            tableName: ingestion_configurations
             columns:
               - column:
                   name: job_id
