@@ -15,6 +15,4 @@ rabbitmq:
   password: secret
   exchanges:
     file-upload: file.upload.exchange
-  queues:
-    ingestor: ingestor.queue
-    notification: notification.queue
+

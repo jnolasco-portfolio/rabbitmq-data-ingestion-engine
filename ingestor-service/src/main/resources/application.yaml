@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: ingestion-service
+    name: dataIngested-service
   cloud:
     openfeign:
       client:
@@ -12,7 +12,7 @@ spring:
             url: http://localhost:8081
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ingestion
+    url: jdbc:postgresql://localhost:5432/dataIngested
     username: ingestor_user
     password: secret2
     driver-class-name: org.postgresql.Driver
@@ -36,14 +36,7 @@ rabbitmq:
   username: myuser
   password: secret
   exchanges:
-    ingestion: ingestion.exchange
+    data-ingested: data.ingested.exchange
+    file-upload: file.upload.exchange
   queues:
-    report-generator: report-generator.queue
-    notification: notification.queue
----
-spring:
-  config:
-    activate:
-      on-profile: test
-  liquibase:
-    enabled: false
+    file-upload: file.upload.queue

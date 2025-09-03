@@ -17,48 +17,35 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     private final RabbitMQProperties rabbitMQProperties;
-    // Spring beans for Queues
+
     @Bean
-    public Queue reportGeneatorQueue() {
-        return new Queue(rabbitMQProperties.queues().reportGenerator());
+    public Queue ingestorQueue() {
+        return new Queue(rabbitMQProperties.queues().fileUpload());
     }
 
     @Bean
-    public Queue notificationQueue() {
-        return new Queue(rabbitMQProperties.queues().notification());
-    }
-
-    // Spring beans for Exchange
-    @Bean
-    public Exchange ingestionExchange() {
-        return new FanoutExchange(rabbitMQProperties.exchanges().ingestion());
-    }
-
-    // Spring beans for Bindings
-    @Bean
-    public Binding reportGeneratorBinding(Queue reportGeneatorQueue, FanoutExchange ingestionExchange) {
-        return BindingBuilder.bind(reportGeneatorQueue)
-                .to(ingestionExchange);
+    public Exchange dataIngestedExchange() {
+        return new FanoutExchange(rabbitMQProperties.exchanges().dataIngested());
     }
 
     @Bean
-    public Binding notificationBinding(Queue notificationQueue, FanoutExchange ingestionExchange)
-    {
-        return BindingBuilder.bind(notificationQueue)
-                .to(ingestionExchange);
+    public Exchange fileUploadExchange() {
+        return new FanoutExchange(rabbitMQProperties.exchanges().fileUpload());
     }
 
-    // message converter
     @Bean
-    public MessageConverter messageConverter()
-    {
+    public Binding fileUploadBinding(Queue ingestorQueue, FanoutExchange fileUploadExchange) {
+        return BindingBuilder.bind(ingestorQueue)
+                .to(fileUploadExchange);
+    }
+
+    @Bean
+    public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
 
-    // configure RabbitTemplate
     @Bean
-    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory)
-    {
+    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
         final var rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter());
         return rabbitTemplate;

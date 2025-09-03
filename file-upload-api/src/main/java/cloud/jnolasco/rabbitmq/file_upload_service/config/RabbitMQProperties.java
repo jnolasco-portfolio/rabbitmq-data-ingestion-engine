@@ -7,7 +7,6 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "rabbitmq")
 public record RabbitMQProperties(String host, int port, String username, String password,
-                                 RabbitMQExchanges exchanges, RabbitMQQueues queues) {
+                                 RabbitMQExchanges exchanges) {
     public record RabbitMQExchanges(String fileUpload) {}
-    public record RabbitMQQueues(String ingestor, String notification) {}
 }

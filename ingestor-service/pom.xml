@@ -10,7 +10,7 @@
 	<groupId>cloud.jnolasco.rabbitmq</groupId>
 	<artifactId>ingestor-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>csv-ingestor-service</name>
+	<name>ingestor-service</name>
 	<description>Report generator for the data-driven data ingestion engine</description>
 	<url/>
 	<licenses>
