@@ -1,0 +1,16 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: notification-service
+
+rabbitmq:
+  host: localhost
+  port: 5672
+  username: myuser
+  password: secret
+  exchanges:
+    data-ingested: data.ingested.exchange
+  queues:
+    data-ingested: data.ingested.queue

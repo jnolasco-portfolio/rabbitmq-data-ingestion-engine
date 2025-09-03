@@ -1,13 +1,13 @@
-package cloud.jnolasco.rabbitmq.notification_consumer_service;
+package cloud.jnolasco.rabbitmq.notification;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NotificationConsumerServiceApplication {
+public class NotificationServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NotificationConsumerServiceApplication.class, args);
+		SpringApplication.run(NotificationServiceApplication.class, args);
 	}
 
 }

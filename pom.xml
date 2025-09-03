@@ -19,7 +19,7 @@
     <modules>
         <module>file-upload-api</module>
         <module>configuration-service</module>
-        <module>notification-consumer-service</module>
+        <module>notification-service</module>
         <module>ingestor-service</module>
         <module>report-generator-service</module>
         <module>commons-data-ingestion</module>
