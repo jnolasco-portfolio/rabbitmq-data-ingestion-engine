@@ -3,7 +3,9 @@ server:
 
 spring:
   application:
-    name: dataIngested-service
+    name: ingestor-service
+  profiles:
+    active: dev
   cloud:
     openfeign:
       client:
@@ -12,7 +14,7 @@ spring:
             url: http://localhost:8081
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/dataIngested
+    url: jdbc:postgresql://localhost:5433/ingestion
     username: ingestor_user
     password: secret2
     driver-class-name: org.postgresql.Driver
@@ -25,7 +27,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     change-log: classpath:/db/changelog/app-changelog.yaml
-    default-schema: public
 
 storage:
   path: /tmp

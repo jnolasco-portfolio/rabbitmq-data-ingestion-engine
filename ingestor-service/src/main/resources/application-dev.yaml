@@ -1,0 +1,3 @@
+app:
+  ingestion:
+    truncate-on-load: true

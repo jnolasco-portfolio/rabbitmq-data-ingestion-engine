@@ -6,7 +6,7 @@ spring:
     name: report-generator-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ingestor
+    url: jdbc:postgresql://localhost:5433/ingestion?currentSchema=data_ingested
     username: ingestor_user
     password: secret2
     driver-class-name: org.postgresql.Driver

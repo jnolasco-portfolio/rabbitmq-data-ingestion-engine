@@ -18,20 +18,17 @@ public class RabbitMQConfig {
 
     private final RabbitMQProperties rabbitMQProperties;
 
-    // Spring beans for Exchange
     @Bean
     public Exchange fileUploadExchange() {
         return new FanoutExchange(rabbitMQProperties.exchanges().fileUpload());
     }
 
-    // message converter
     @Bean
     public MessageConverter messageConverter()
     {
         return new Jackson2JsonMessageConverter();
     }
 
-    // configure RabbitTemplate
     @Bean
     public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter)
     {

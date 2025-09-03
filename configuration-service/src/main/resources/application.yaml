@@ -6,7 +6,7 @@ spring:
     name: configuration-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/config
+    url: jdbc:postgresql://localhost:5432/configuration
     username: config_user
     password: secret1
     driver-class-name: org.postgresql.Driver
@@ -19,11 +19,3 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     change-log: classpath:/db/changelog/app-changelog.yaml
-    default-schema: public
----
-spring:
-  config:
-    activate:
-      on-profile: test
-  liquibase:
-    enabled: false

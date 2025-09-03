@@ -7,13 +7,19 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
-  postgres:
+  postgres-config:
     image: 'postgres:17-alpine'
     environment:
-      - 'POSTGRES_DB=data_ingestion_engine'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      - 'POSTGRES_PASSWORD=supersecret1'
     ports:
       - '5432:5432'
     volumes:
-      - './init.sql:/docker-entrypoint-initdb.d/init.sql'
+      - './init-config.sql:/docker-entrypoint-initdb.d/init-config.sql'
+  postgres-ingestion:
+    image: 'postgres:17-alpine'
+    environment:
+      - 'POSTGRES_PASSWORD=supersecret2'
+    ports:
+      - '5433:5432'
+    volumes:
+      - './init-ingestion.sql:/docker-entrypoint-initdb.d/init-config.sql'
