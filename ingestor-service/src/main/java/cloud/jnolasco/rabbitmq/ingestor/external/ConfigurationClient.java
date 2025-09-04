@@ -1,6 +1,7 @@
 package cloud.jnolasco.rabbitmq.ingestor.external;
 
 import cloud.jnolasco.rabbitmq.common.dto.ApiResponse;
+import cloud.jnolasco.rabbitmq.common.dto.IngestionConfigurationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,5 +13,5 @@ import java.util.UUID;
 public interface ConfigurationClient {
 
     @GetMapping("/api/v1/configurations/{jobId}")
-    ResponseEntity<ApiResponse> getConfiguration(@PathVariable UUID jobId);
+    ResponseEntity<ApiResponse<IngestionConfigurationResponse>> getConfiguration(@PathVariable UUID jobId);
 }

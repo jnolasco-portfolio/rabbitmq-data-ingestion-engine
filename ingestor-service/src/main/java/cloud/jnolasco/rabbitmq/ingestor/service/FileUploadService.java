@@ -1,6 +1,7 @@
 package cloud.jnolasco.rabbitmq.ingestor.service;
 
 import cloud.jnolasco.rabbitmq.common.dto.ApiResponse;
+import cloud.jnolasco.rabbitmq.common.dto.IngestionConfigurationResponse;
 import cloud.jnolasco.rabbitmq.common.event.DataIngestedEvent;
 import cloud.jnolasco.rabbitmq.common.event.FileUploadEvent;
 import cloud.jnolasco.rabbitmq.ingestor.config.IngestionProperties;
@@ -31,8 +32,8 @@ public class FileUploadService {
         log.info("FileUploadEvent received => {}", event);
 
         try {
-            ResponseEntity<ApiResponse> response = configurationClient.getConfiguration(event.jobId());
-            ApiResponse<?> apiResponse = response.getBody();
+            ResponseEntity<ApiResponse<IngestionConfigurationResponse>> response = configurationClient.getConfiguration(event.jobId());
+            ApiResponse<IngestionConfigurationResponse> apiResponse = response.getBody();
 
             if (apiResponse == null || apiResponse.data() == null) {
                 log.error("Failed to retrieve valid configuration for jobId: {}. Response was empty or invalid.", event.jobId());
@@ -40,7 +41,7 @@ public class FileUploadService {
             }
 
             log.info("Configuration received: {}. Delegating to DynamicCsvIngestor.", apiResponse.data());
-            dynamicCsvIngestor.ingest(event, (Map<String, Object>) apiResponse.data(), ingestionProperties.truncateOnLoad());
+            dynamicCsvIngestor.ingest(event, apiResponse.data(), ingestionProperties.truncateOnLoad());
             DataIngestedEvent dataIngestedEvent = DataIngestedEvent.builder()
                     .id(event.id())
                     .jobId(event.jobId())

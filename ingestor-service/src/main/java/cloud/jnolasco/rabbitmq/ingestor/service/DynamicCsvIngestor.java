@@ -1,5 +1,6 @@
 package cloud.jnolasco.rabbitmq.ingestor.service;
 
+import cloud.jnolasco.rabbitmq.common.dto.IngestionConfigurationResponse;
 import cloud.jnolasco.rabbitmq.common.event.FileUploadEvent;
 import com.opencsv.CSVReaderHeaderAware;
 import com.opencsv.exceptions.CsvValidationException;
@@ -38,9 +39,9 @@ public class DynamicCsvIngestor {
      * @param truncateBeforeLoad If true, the target table will be truncated before new data is inserted.
      */
     @Transactional
-    public void ingest(FileUploadEvent event, Map<String, Object> config, boolean truncateBeforeLoad) {
-        String targetTable = (String) config.get("targetTable");
-        Map<String, String> mappingJson = (Map<String, String>) config.get("mappingJson");
+    public void ingest(FileUploadEvent event, IngestionConfigurationResponse config, boolean truncateBeforeLoad) {
+        String targetTable = (String) config.targetTable();
+        Map<String, String> mappingJson = (Map<String, String>) config.mappingJson();
 
         try {
             if (truncateBeforeLoad) {
