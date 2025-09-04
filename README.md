@@ -79,11 +79,9 @@ You can run each service by:
 
 Once all services are running, you can trigger the workflow by uploading the sample data file.
 
-1.  Use a tool like `curl` or Postman to send a `POST` request to the `file-upload-api`.
-2.  The endpoint is: `POST http://localhost:8080/api/v1/upload`
-3.  The request must be a `multipart/form-data` request with two parts:
-    *   A `file` part containing the `dummy-sales-data.csv` file located at the project root.
-    *   A `jobId` part with the value `a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11`. This UUID corresponds to the pre-configured job in the `configuration` database.
+#### Option A: Using `curl`
+
+You can use the following command from the project root to upload the file.
 
 **Example `curl` command (run from the project root):**
 ```sh
@@ -91,6 +89,22 @@ curl --location 'http://localhost:8080/api/v1/upload' \
 --form 'file=@"./dummy-sales-data.csv"' \
 --form 'jobId=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11'
 ```
+
+#### Option B: Using the Swagger UI
+
+The `file-upload-api` includes Swagger UI for interactive API documentation and testing. This is a user-friendly alternative to using `curl`.
+
+1.  **Access the UI:** Once the `file-upload-api` is running, open your web browser and navigate to:
+    [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+2.  **Find the Endpoint:** You will see the `FileUploadController` and its `POST /api/v1/upload` endpoint.
+
+3.  **Execute the Request:**
+    *   Expand the endpoint details.
+    *   Click the "Try it out" button.
+    *   Use the "Choose File" button to select the `dummy-sales-data.csv` file from your project root.
+    *   Enter `a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11` into the `jobId` field.
+    *   Click the "Execute" button to send the request.
 
 ### Step 4: Observe the Workflow
 
