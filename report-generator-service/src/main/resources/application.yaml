@@ -5,15 +5,12 @@ spring:
   application:
     name: report-generator-service
 
-  datasource:
-    url: jdbc:postgresql://localhost:5433/ingestion?currentSchema=data_ingested
-    username: ingestor_user
-    password: secret2
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+rabbitmq:
+  host: localhost
+  port: 5672
+  username: myuser
+  password: secret
+  exchanges:
+    data-ingested: data.ingested.exchange
+  queues:
+    data-ingested: data.ingested.queue
