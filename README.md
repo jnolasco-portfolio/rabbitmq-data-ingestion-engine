@@ -111,3 +111,13 @@ The `file-upload-api` includes Swagger UI for interactive API documentation and 
 *   **Check Logs**: Monitor the console output from each of your running services in your IDE. You will see logs from each service as the message passes through the pipeline.
 *   **Database Verification**: Connect to the `ingestion` PostgreSQL database (on port `5433`) and check the `sales_orders` table to confirm the data was ingested correctly.
 *   **RabbitMQ Management UI**: Access the RabbitMQ Management UI at `http://localhost:15672/` (Default credentials: `myuser`/`secret`) to see the exchanges, queues, and message flow.
+
+---
+
+## 🔮 Future Improvements
+
+This project is not meant for production-ready use, but future enhancements could include:
+
+-   **Better Error Handling:** Implementing more robust error handling strategies, such as dead-letter queues (DLQs) in RabbitMQ to handle messages that cannot be processed.
+-   **Integration Tests:** Adding a comprehensive suite of integration tests using libraries like Testcontainers to validate the end-to-end workflow.
+-   **Dockerize All Microservices:** Containerizing each Spring Boot microservice and adding them to the `docker-compose.yaml` file for a fully orchestrated, single-command startup.
