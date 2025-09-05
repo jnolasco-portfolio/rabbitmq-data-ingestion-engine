@@ -14,6 +14,53 @@ The **Data Ingestion Engine** is a distributed system built on a microservices a
 ## 🏗️ Architectural Overview
 The system is composed of several microservices, each with a single responsibility. Communication between services is handled asynchronously through RabbitMQ exchanges and queues, following a publish-subscribe model.
 
+### Workflow Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant FileAPI as File API
+    participant RabbitMQ
+    participant Ingestor as Ingestor Service
+    participant Reporter as Report Generator
+    participant Notifier as Notification Service
+
+    title Data Ingestion Engine Workflow
+    
+    User->>FileAPI: Upload CSV
+    activate FileAPI
+    FileAPI->>RabbitMQ: Publish (FileUploadEvent)
+    deactivate FileAPI
+
+    Note over RabbitMQ: Fanout Exchange: file.upload.exchange
+    RabbitMQ-->>Ingestor: Consume FileUploadEvent
+
+    activate Ingestor
+    Ingestor->>Ingestor: Process CSV & Ingest Data
+    Ingestor->>RabbitMQ: Publish (DataIngestedEvent)
+    deactivate Ingestor
+
+    Note over RabbitMQ: Fanout Exchange: data.ingested.exchange
+    RabbitMQ-->>Reporter: Consume DataIngestedEvent
+    RabbitMQ-->>Notifier: Consume DataIngestedEvent
+
+    activate Reporter
+    Reporter->>Reporter: Generate Report
+    Reporter->>RabbitMQ: Publish (ReportGeneratedEvent)
+    deactivate Reporter
+    
+    activate Notifier
+    Notifier->>Notifier: Log "Data Ingested" Notification
+    deactivate Notifier
+
+    Note over RabbitMQ: Topic Exchange: report.generated.exchange
+    RabbitMQ-->>Notifier: Consume ReportGeneratedEvent
+
+    activate Notifier
+    Notifier->>Notifier: Log "Report Generated" Notification
+    deactivate Notifier
+```
+
 ## 🧠 Workflow Explanation
 
 The workflow is triggered by a file upload and is managed by a series of events and message passing.
@@ -31,14 +78,15 @@ The workflow is triggered by a file upload and is managed by a series of events 
 1.  The **`ingestor-service`** consumes the `FileUploadEvent` from its queue.
 2.  It uses the event metadata (specifically a `jobId`) to query the **`configuration-service`** for the dynamic data mapping rules.
 3.  Using this configuration, the `ingestor-service` processes the CSV file from the local path and **ingests** the data into the appropriate table in the `ingestion` PostgreSQL database.
-4.  Upon successful ingestion, the `ingestor-service` publishes a new **`DataIngestedEvent`** to a **fanout exchange** (`data.ingested.exchange`).
+4.  Upon successful ingestion, the `ingestor-service` publishes a new **`DataIngestedEvent`** to a **fanout exchange** (`data.ingested.exchange`). This exchange broadcasts the event to both the report generator and the notification service.
 
-### Phase 3: Reporting & Final Notification
+### Phase 3: Reporting & Final Notifications
 
-1.  The **`report-generator-service`** consumes the `DataIngestedEvent` from its queue.
-2.  It performs its main task, which is simulating the generation of a report based on the ingested data.
-3.  After generating the report, it publishes a final **`ReportGeneratedEvent`** to a **topic exchange** (`report.generated.exchange`) with the routing key `report.generated.topic`.
-4.  The **`notification-service`** is included in the project as a placeholder but is **not currently configured** to consume the `ReportGeneratedEvent`. A future improvement would be to implement this final consumer to send a notification (e.g., an email or webhook) to signal that the entire workflow is complete.
+The `DataIngestedEvent` is consumed by two services in parallel:
+
+1.  The **`report-generator-service`** consumes the event and performs its main task, which is simulating the generation of a report. After completing its work, it publishes a final **`ReportGeneratedEvent`** to a **topic exchange** (`report.generated.exchange`).
+2.  The **`notification-service`** also consumes the `DataIngestedEvent` and logs an initial notification, confirming that the data has been successfully ingested.
+3.  Finally, the **`notification-service`** consumes the `ReportGeneratedEvent` from the topic exchange and logs a final notification, signaling that the entire workflow is complete.
 
 ---
 
@@ -119,7 +167,7 @@ The `file-upload-api` includes Swagger UI for interactive API documentation and 
 
 ## 🔮 Future Improvements
 
-This project serves to demonstrate a specific event-driven workflow and is not exhaustive in its production-ready features. Future enhancements could include:
+This project serves as a portfolio piece to demonstrate a specific event-driven workflow and is not exhaustive in its production-ready features. Future enhancements could include:
 
 -   **Better Error Handling:** Implementing more robust error handling strategies, such as dead-letter queues (DLQs) in RabbitMQ to handle messages that cannot be processed.
 -   **Integration Tests:** Adding a comprehensive suite of integration tests using libraries like Testcontainers to validate the end-to-end workflow.
