@@ -18,7 +18,7 @@ The system is composed of several microservices, each with a single responsibili
 
 ```mermaid
 sequenceDiagram
-    participant User
+    actor User
     participant FileAPI as File API
     participant RabbitMQ
     participant Ingestor as Ingestor Service
@@ -167,7 +167,7 @@ The `file-upload-api` includes Swagger UI for interactive API documentation and 
 
 ## 🔮 Future Improvements
 
-This project serves as a portfolio piece to demonstrate a specific event-driven workflow and is not exhaustive in its production-ready features. Future enhancements could include:
+This project serves as showcase of event-driven workflow and is not exhaustive in its production-ready features. Future enhancements could include:
 
 -   **Better Error Handling:** Implementing more robust error handling strategies, such as dead-letter queues (DLQs) in RabbitMQ to handle messages that cannot be processed.
 -   **Integration Tests:** Adding a comprehensive suite of integration tests using libraries like Testcontainers to validate the end-to-end workflow.
