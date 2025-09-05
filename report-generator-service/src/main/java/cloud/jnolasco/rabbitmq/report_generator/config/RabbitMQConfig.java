@@ -29,10 +29,16 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding fileUploadBinding(Queue ingestorQueue, FanoutExchange dataIngestedExchange) {
+    public Binding ingestorBinding(Queue ingestorQueue, FanoutExchange dataIngestedExchange) {
         return BindingBuilder.bind(ingestorQueue)
                 .to(dataIngestedExchange);
     }
+
+    @Bean
+    public Exchange reportGeneratedExchange() {
+        return new TopicExchange(rabbitMQProperties.exchanges().reportGenerated());
+    }
+
 
     @Bean
     public MessageConverter messageConverter() {

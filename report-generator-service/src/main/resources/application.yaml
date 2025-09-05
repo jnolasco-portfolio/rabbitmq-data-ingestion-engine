@@ -12,5 +12,8 @@ rabbitmq:
   password: secret
   exchanges:
     data-ingested: data.ingested.exchange
+    report-generated: report.generated.exchange
   queues:
     data-ingested: data.ingested.queue
+  topics:
+    report-generated: report.generated.topic
