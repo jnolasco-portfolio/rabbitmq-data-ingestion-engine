@@ -35,6 +35,23 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Exchange reportGeneratedExchange() {
+        return new TopicExchange(rabbitMQProperties.exchanges().reportGenerated());
+    }
+
+    @Bean
+    public Queue reportGeneratedQueue() {
+        return new Queue(rabbitMQProperties.queues().reportGenerated());
+    }
+
+    @Bean
+    public Binding reportGeneratedBinding(Queue reportGeneratedQueue, TopicExchange reportGeneratedExchange) {
+        return BindingBuilder.bind(reportGeneratedQueue)
+                .to(reportGeneratedExchange)
+                .with(rabbitMQProperties.topics().reportGenerated());
+    }
+
+    @Bean
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }

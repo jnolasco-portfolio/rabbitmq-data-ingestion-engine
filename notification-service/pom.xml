@@ -10,7 +10,7 @@
 	<groupId>cloud.jnolasco.rabbitmq</groupId>
 	<artifactId>notification-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>notification-consumer-service</name>
+	<name>notification-service</name>
 	<description>Notfication for the data-driven data ingestion engine</description>
 	<url/>
 	<licenses>
