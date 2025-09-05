@@ -21,21 +21,24 @@ The workflow is triggered by a file upload and is managed by a series of events 
 ### Phase 1: File Upload & Event Broadcasting
 
 1.  A user uploads a CSV file via a REST API endpoint on the **`file-upload-api`**.
-2.  The `file-upload-api` saves the file to a temporary local directory and publishes a **`FileUploadEvent`** message to a RabbitMQ **fanout exchange** (`file.upload.exchange`).
-3.  The fanout exchange broadcasts this single event to all bound queues. In this case, the `ingestor-service` receives the message.
+2.  The `file-upload-api` saves the file to a **temporary local directory**.
+    *   *Note: In a production-grade application, this would be replaced by a robust, scalable cloud storage solution like Amazon S3 or Google Cloud Storage.*
+3.  It then publishes a **`FileUploadEvent`** message to a RabbitMQ **fanout exchange** (`file.upload.exchange`).
+4.  The fanout exchange broadcasts this single event to all bound queues, delivering a copy to the `ingestor-service`.
 
 ### Phase 2: Data Ingestion
 
 1.  The **`ingestor-service`** consumes the `FileUploadEvent` from its queue.
-2.  It uses the event metadata (specifically a `jobId`) to query the **`configuration-service`** for database details, including the target table and column mappings.
-3.  Using this configuration, the `ingestor-service` processes the CSV file from the local path and **ingests** the data into the appropriate table in the PostgreSQL database.
-4.  Upon successful ingestion, the `ingestor-service` publishes a new **`DataIngestedEvent`** to a **direct exchange** (`data.ingested.exchange`).
+2.  It uses the event metadata (specifically a `jobId`) to query the **`configuration-service`** for the dynamic data mapping rules.
+3.  Using this configuration, the `ingestor-service` processes the CSV file from the local path and **ingests** the data into the appropriate table in the `ingestion` PostgreSQL database.
+4.  Upon successful ingestion, the `ingestor-service` publishes a new **`DataIngestedEvent`** to a **fanout exchange** (`data.ingested.exchange`).
 
 ### Phase 3: Reporting & Final Notification
 
 1.  The **`report-generator-service`** consumes the `DataIngestedEvent` from its queue.
-2.  It performs its task, such as querying the newly ingested data to generate a report.
-3.  The **`notification-consumer-service`** could be configured to listen for a final event to send a notification confirming the process is complete.
+2.  It performs its main task, which is simulating the generation of a report based on the ingested data.
+3.  After generating the report, it publishes a final **`ReportGeneratedEvent`** to a **topic exchange** (`report.generated.exchange`) with the routing key `report.generated.topic`.
+4.  The **`notification-service`** is included in the project as a placeholder but is **not currently configured** to consume the `ReportGeneratedEvent`. A future improvement would be to implement this final consumer to send a notification (e.g., an email or webhook) to signal that the entire workflow is complete.
 
 ---
 
@@ -68,7 +71,7 @@ The microservices are not containerized yet and must be run individually from yo
 1.  **`configuration-service`** (on port 8081)
 2.  **`file-upload-api`** (on port 8080)
 3.  **`ingestor-service`** (on port 8082)
-4.  **`notification-consumer-service`** (on port 8083)
+4.  **`notification-service`** (on port 8083)
 5.  **`report-generator-service`** (on port 8084)
 
 You can run each service by:
@@ -116,7 +119,7 @@ The `file-upload-api` includes Swagger UI for interactive API documentation and 
 
 ## 🔮 Future Improvements
 
-This project is not meant for production-ready use, but future enhancements could include:
+This project serves to demonstrate a specific event-driven workflow and is not exhaustive in its production-ready features. Future enhancements could include:
 
 -   **Better Error Handling:** Implementing more robust error handling strategies, such as dead-letter queues (DLQs) in RabbitMQ to handle messages that cannot be processed.
 -   **Integration Tests:** Adding a comprehensive suite of integration tests using libraries like Testcontainers to validate the end-to-end workflow.
