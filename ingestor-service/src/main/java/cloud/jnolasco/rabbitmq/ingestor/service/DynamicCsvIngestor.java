@@ -40,7 +40,7 @@ public class DynamicCsvIngestor {
      */
     @Transactional
     public void ingest(FileUploadEvent event, IngestionConfigurationResponse config, boolean truncateBeforeLoad) {
-        String targetTable = (String) config.targetTable();
+        String targetTable = config.targetTable();
         Map<String, String> mappingJson = (Map<String, String>) config.mappingJson();
 
         try {
